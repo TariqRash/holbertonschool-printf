@@ -1,9 +1,9 @@
 #include "main.h"
 
 /**
- * _printf - custom printf function
- * @format:format string
- * returen :number of charaters printed
+ * _printf - Custom printf function
+ * @format: Format string
+ * Return : Number of characters printed
  * */
 
 int _printf(const char *format, ...)
@@ -15,7 +15,7 @@ int i = 0, count = 0;
 if (Format == NULL)
 return (-1),
 
-va-start(args, format);
+va_start(args, format);
 
 while (format[i])
 {
@@ -36,12 +36,12 @@ write (1, "%", 1)
 count++;
 }
 
-else if (format[i] == "d"  || format[i] == 'i')
-count += print_number(args),
+else if (format[i] == 'd'  || format[i] == 'i')
+count += print_number(args);
 else 
 {
-write (1, "%" ,1)
-write(1,&format[i]; 1);
+write (1, "%" ,1);
+write(1, &format[i], 1);
 count+=2;
 }
 }
