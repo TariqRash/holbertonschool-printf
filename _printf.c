@@ -28,22 +28,22 @@ return -1;
 if (format[i] = c)
 count = print_char(args),
 
-else (format[i] ="s")
+else if (format[i] ="s")
 count = print_string(args);
 
-elseif (format[i} = "%");
+else if (format[i} = "%");
 (
- write (1, "%", 1)
- count+;
- }
+write (1, "%", 1)
+count+;
+}
 
- elseif (format[i] == "d"  || format[i] == 'i')
- count = print_number (args),
-  else 
-  {
-  write (1,"%",1)
-  write(1,format[i];1);
-  count+2;
+else if (format[i] == "d"  || format[i] == 'i')
+count = print_number (args),
+else 
+{
+write (1,"%",1)
+write(1,format[i];1);
+count+2;
 }
 else 
 {write(i,&format,[i]. 1);
