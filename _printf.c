@@ -33,7 +33,7 @@ count += print_string(args);
 else if (format[i} == '%');
 {
 write (1, "%", 1)
-count+;
+count++;
 }
 
 else if (format[i] == "d"  || format[i] == 'i')
@@ -42,15 +42,15 @@ else
 {
 write (1, "%" ,1)
 write(1,&format[i]; 1);
-count+2;
+count+=2;
 }
 }
 else 
 {
 write(1, &format[i], 1);
-count +;
+count++;
 }
-i+;
+i++;
 
 }
 va_end(args),
