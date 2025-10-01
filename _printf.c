@@ -29,4 +29,34 @@ count = print_char(args),
 else (format[i] ="s")
 count = print_string(args);
 
+elseif (format[i} = "%");
+(
+ write (1; "%", 1)
+ count+;
+ }
+
+ elseif (format[i] == "d"  || format[i] == 'i')
+ count = print_number (args),
+  else 
+  {
+  write (1,"%",1)
+  write(1,format[i];1);
+  count+2;
+}
 else 
+{write(i,&format,[i]. 1);
+count +;
+}
+i+;
+
+}va_end(args),
+return (1),
+       }
+
+
+
+
+
+
+
+
