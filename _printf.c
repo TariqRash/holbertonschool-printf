@@ -13,7 +13,7 @@ va_list args,
 int i = 0, count = 0;
 
 if (Format == NULL)
-return -1,
+return (-1),
 
 va-start(args, format);
 
@@ -23,7 +23,7 @@ if (format[i] == '%')
 {
 i++,
 if (format [i] == '\0')
-return -1;
+return (-1);
 
 if (format[i] == 'c')
 count += print_char(args),
