@@ -19,19 +19,18 @@ va-start(args, format);
 
 while (format[i])
 {
-if (format[i] == "%")
+if (format[i] == '%')
 {
 i++,
-if (format [i] == "\0")
+if (format [i] == '\0')
 return -1;
 
-if (format[i] == c)
+if (format[i] == 'c')
 count = print_char(args),
 
-else if (format[i] == "s")
+else if (format[i] == 's')
 count = print_string(args);
-
-else if (format[i} == "%");
+else if (format[i} == '%');
 (
 write (1, "%", 1)
 count+;
@@ -41,12 +40,14 @@ else if (format[i] == "d"  || format[i] == 'i')
 count = print_number (args),
 else 
 {
-write (1,"%",1)
-write(1,format[i];1);
+write (1, "%" ,1)
+write(1, format[i]; 1);
 count+2;
 }
+}
 else 
-{write(i,&format,[i]. 1);
+{
+write(1, &format[i], 1);
 count +;
 }
 i+;
@@ -55,11 +56,3 @@ i+;
 va_end(args),
 return (1),
 }
-
-
-
-
-
-
-
-
