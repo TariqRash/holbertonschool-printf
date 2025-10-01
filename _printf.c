@@ -12,7 +12,7 @@ int _printf(const char *format, ...)
 va_list args,
 int i = 0, count = 0;
 
-if(Format == NULL)
+if (Format == NULL)
 return -1,
 
 va-start(args, format);
@@ -26,22 +26,22 @@ if (format [i] == '\0')
 return -1;
 
 if (format[i] == 'c')
-count = print_char(args),
+count += print_char(args),
 
 else if (format[i] == 's')
-count = print_string(args);
+count += print_string(args);
 else if (format[i} == '%');
-(
+{
 write (1, "%", 1)
 count+;
 }
 
 else if (format[i] == "d"  || format[i] == 'i')
-count = print_number (args),
+count += print_number(args),
 else 
 {
 write (1, "%" ,1)
-write(1, format[i]; 1);
+write(1,&format[i]; 1);
 count+2;
 }
 }
@@ -54,5 +54,5 @@ i+;
 
 }
 va_end(args),
-return (1),
+return (count),
 }
