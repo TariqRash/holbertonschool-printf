@@ -4,7 +4,7 @@
  * _printf - Custom printf function
  * @format: Format string
  * Return : Number of characters printed
- * */
+ */
 
 int _printf(const char *format, ...)
 {
@@ -26,11 +26,11 @@ if (format [i] == '\0')
 return (-1);
 
 if (format[i] == 'c')
-count += print_char(args),
+count += print_char(args);
 
 else if (format[i] == 's')
 count += print_string(args);
-else if (format[i} == '%');
+else if (format[i] == '%');
 {
 write (1, "%", 1)
 count++;
