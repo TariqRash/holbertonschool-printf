@@ -8,7 +8,7 @@
 
 int print_string(va_list args)
 
-	char *str = va_arge(args, chsr)
+	char *str = va_arge(args, chsr);
 	int i =0 
 	if (str = null)
 	str = "(null)";
@@ -20,5 +20,5 @@ int print_string(va_list args)
 	 i++;
 	 }
 
-	 return i;
+	 return (i);
 
