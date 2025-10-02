@@ -1,12 +1,12 @@
-#include <main.h>
+#include "main.h"
 
 /**
  * print_string - prints a string
  * @args: Arguments list
- * rutern:number of characters printed
- * */
+ * Rutern: Number of characters printed
+ */
 
-int print string(va-list args)
+int print_string(va_list args)
 
 	char *str = va_arge(args, chsr)
 	int i =0 
