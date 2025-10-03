@@ -23,6 +23,8 @@ int handle_specifier(char format, va_list args)
 	else if (format == 'd' || format == 'i')
 		count += print_number(args);
 	else if (format == 'b')
+	else if (format == 'p')
+		count += print_pointer(args);
 		count += print_binary(args);
 	else
 	{
