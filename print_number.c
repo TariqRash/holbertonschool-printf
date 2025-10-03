@@ -33,6 +33,7 @@ int print_int(long n, format_t spec)
 {
 	int count = 0, len, pad, i, prec_pad;
 	unsigned long num;
+	char pad_char = ' ';
 
 	if (spec.precision == 0 && n == 0)
 	{
@@ -50,9 +51,12 @@ int print_int(long n, format_t spec)
 	if (n < 0)
 		len++;
 	
+	if ((spec.flags & FLAG_ZERO) && !(spec.flags & FLAG_MINUS) && spec.precision < 0)
+		pad_char = '0';
+	
 	pad = spec.width - (len + prec_pad);
 
-	if (!(spec.flags & FLAG_MINUS) && pad > 0)
+	if (!(spec.flags & FLAG_MINUS) && pad > 0 && pad_char == ' ')
 		for (i = 0; i < pad; i++)
 			count += write(1, " ", 1);
 
@@ -76,6 +80,10 @@ int print_int(long n, format_t spec)
 		}
 		num = n;
 	}
+
+	if (pad_char == '0' && pad > 0)
+		for (i = 0; i < pad; i++)
+			count += write(1, "0", 1);
 
 	for (i = 0; i < prec_pad; i++)
 		count += write(1, "0", 1);

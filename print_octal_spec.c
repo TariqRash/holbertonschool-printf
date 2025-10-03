@@ -18,7 +18,7 @@ int print_octal_spec(va_list args, format_t spec)
 {
 	unsigned long n;
 	int count = 0, len, pad, i, prec_pad, idx = 0;
-	char buffer[32];
+	char buffer[32], pad_char = ' ';
 
 	if (spec.length == LENGTH_LONG)
 		n = va_arg(args, unsigned long);
@@ -39,9 +39,13 @@ int print_octal_spec(va_list args, format_t spec)
 	prec_pad = (spec.precision > len) ? spec.precision - len : 0;
 	if ((spec.flags & FLAG_HASH) && n != 0)
 		len++;
+	
+	if ((spec.flags & FLAG_ZERO) && !(spec.flags & FLAG_MINUS) && spec.precision < 0)
+		pad_char = '0';
+	
 	pad = spec.width - (len + prec_pad);
 
-	if (!(spec.flags & FLAG_MINUS) && pad > 0)
+	if (!(spec.flags & FLAG_MINUS) && pad > 0 && pad_char == ' ')
 		for (i = 0; i < pad; i++)
 			count += write(1, " ", 1);
 
@@ -50,6 +54,10 @@ int print_octal_spec(va_list args, format_t spec)
 		write(1, "0", 1);
 		count++;
 	}
+
+	if (pad_char == '0' && pad > 0)
+		for (i = 0; i < pad; i++)
+			count += write(1, "0", 1);
 
 	for (i = 0; i < prec_pad; i++)
 		count += write(1, "0", 1);
