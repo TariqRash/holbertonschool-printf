@@ -70,32 +70,31 @@ int handle_specifier(char format, va_list args, format_t spec)
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int i = 0, count = 0;
+	int i;
+	int count;
 	format_t spec;
 
 	if (format == NULL)
 		return (-1);
 	reset_buffer();
 	va_start(args, format);
+	i = 0;
+	count = 0;
 	while (format[i])
 	{
-		if (format[i] == '%')
+		if (format[i] != '%')
 		{
-			i++;
-			if (format[i] == '\0')
-			{
-				va_end(args);
-				flush_buffer();
-				return (-1);
-			}
-			spec = parse_flags(format, &i);
-			count += handle_specifier(format[i], args, spec);
+			add_to_buffer(format[i]);
+			count++;
 			i++;
 		}
 		else
 		{
-			add_to_buffer(format[i]);
-			count++;
+			i++;
+			if (format[i] == '\0')
+				break;
+			spec = parse_flags(format, &i);
+			count += handle_specifier(format[i], args, spec);
 			i++;
 		}
 	}
