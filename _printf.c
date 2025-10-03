@@ -1,13 +1,5 @@
 #include "main.h"
 
-/**
- * handle_specifier - Handle format specifier
- * @format: Format character
- * @args: Arguments list
- * @spec: Format specification
- *
- * Return: Number of characters printed
- */
 int handle_specifier(char format, va_list args, format_t spec)
 {
 	int count = 0;
@@ -75,12 +67,6 @@ int handle_specifier(char format, va_list args, format_t spec)
 	return (count);
 }
 
-/**
- * _printf - Custom printf function
- * @format: Format string containing conversion specifiers
- *
- * Return: Number of characters printed, -1 on error
- */
 int _printf(const char *format, ...)
 {
 	va_list args;
@@ -89,10 +75,8 @@ int _printf(const char *format, ...)
 
 	if (format == NULL)
 		return (-1);
-	
 	reset_buffer();
 	va_start(args, format);
-	
 	while (format[i])
 	{
 		if (format[i] == '%')
@@ -100,20 +84,21 @@ int _printf(const char *format, ...)
 			i++;
 			if (format[i] == '\0')
 			{
+				va_end(args);
 				flush_buffer();
 				return (-1);
 			}
 			spec = parse_flags(format, &i);
 			count += handle_specifier(format[i], args, spec);
+			i++;
 		}
 		else
 		{
 			add_to_buffer(format[i]);
 			count++;
+			i++;
 		}
-		i++;
 	}
-	
 	va_end(args);
 	flush_buffer();
 	return (count);
