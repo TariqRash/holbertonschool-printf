@@ -3,16 +3,9 @@
 int get_int_length(long n)
 {
 	int len = 0;
-
-	if (n == 0)
-		return (1);
-	if (n < 0)
-		n = -n;
-	while (n > 0)
-	{
-		len++;
-		n /= 10;
-	}
+	if (n == 0) return (1);
+	if (n < 0) n = -n;
+	while (n > 0) { len++; n /= 10; }
 	return (len);
 }
 
@@ -20,11 +13,9 @@ int print_int_rec(unsigned long n)
 {
 	int count = 0;
 	char c;
-
-	if (n / 10)
-		count += print_int_rec(n / 10);
+	if (n / 10) count += print_int_rec(n / 10);
 	c = (n % 10) + '0';
-	write(1, &c, 1);
+	add_to_buffer(c);
 	count++;
 	return (count);
 }
@@ -37,77 +28,40 @@ int print_int(long n, format_t spec)
 
 	if (spec.precision == 0 && n == 0)
 	{
-		pad = spec.width;
-		for (i = 0; i < pad; i++)
-			count += write(1, " ", 1);
+		for (i = 0; i < spec.width; i++) { add_to_buffer(' '); count++; }
 		return (count);
 	}
-
 	len = get_int_length(n);
 	prec_pad = (spec.precision > len) ? spec.precision - len : 0;
-	
-	if (n >= 0 && (spec.flags & (FLAG_PLUS | FLAG_SPACE)))
-		len++;
-	if (n < 0)
-		len++;
-	
+	if (n >= 0 && (spec.flags & (FLAG_PLUS | FLAG_SPACE))) len++;
+	if (n < 0) len++;
 	if ((spec.flags & FLAG_ZERO) && !(spec.flags & FLAG_MINUS) && spec.precision < 0)
 		pad_char = '0';
-	
 	pad = spec.width - (len + prec_pad);
-	if (pad < 0)
-		pad = 0;
-
+	if (pad < 0) pad = 0;
 	if (!(spec.flags & FLAG_MINUS) && pad > 0 && pad_char == ' ')
-		for (i = 0; i < pad; i++)
-			count += write(1, " ", 1);
-
-	if (n < 0)
-	{
-		write(1, "-", 1);
-		count++;
-		num = -n;
-	}
+		for (i = 0; i < pad; i++) { add_to_buffer(' '); count++; }
+	if (n < 0) { add_to_buffer('-'); count++; num = -n; }
 	else
 	{
-		if (spec.flags & FLAG_PLUS)
-		{
-			write(1, "+", 1);
-			count++;
-		}
-		else if (spec.flags & FLAG_SPACE)
-		{
-			write(1, " ", 1);
-			count++;
-		}
+		if (spec.flags & FLAG_PLUS) { add_to_buffer('+'); count++; }
+		else if (spec.flags & FLAG_SPACE) { add_to_buffer(' '); count++; }
 		num = n;
 	}
-
 	if (pad_char == '0' && pad > 0)
-		for (i = 0; i < pad; i++)
-			count += write(1, "0", 1);
-
-	for (i = 0; i < prec_pad; i++)
-		count += write(1, "0", 1);
-
+		for (i = 0; i < pad; i++) { add_to_buffer('0'); count++; }
+	for (i = 0; i < prec_pad; i++) { add_to_buffer('0'); count++; }
 	count += print_int_rec(num);
-
 	if ((spec.flags & FLAG_MINUS) && pad > 0)
-		for (i = 0; i < pad; i++)
-			count += write(1, " ", 1);
-
+		for (i = 0; i < pad; i++) { add_to_buffer(' '); count++; }
 	return (count);
 }
 
 int print_number(va_list args, format_t spec)
 {
 	long n;
-
-	if (spec.length == LENGTH_LONG)
-		n = va_arg(args, long);
-	else if (spec.length == LENGTH_SHORT)
-		n = (short int)va_arg(args, int);
-	else
-		n = va_arg(args, int);
+	if (spec.length == LENGTH_LONG) n = va_arg(args, long);
+	else if (spec.length == LENGTH_SHORT) n = (short int)va_arg(args, int);
+	else n = va_arg(args, int);
 	return (print_int(n, spec));
 }

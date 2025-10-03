@@ -6,19 +6,17 @@ int print_char_width(va_list args, format_t spec)
 	int count = 0, pad = spec.width - 1, i;
 
 	if (!(spec.flags & FLAG_MINUS) && pad > 0)
-		for (i = 0; i < pad; i++)
-			count += write(1, " ", 1);
-	write(1, &c, 1);
+		for (i = 0; i < pad; i++) { add_to_buffer(' '); count++; }
+	add_to_buffer(c);
 	count++;
 	if ((spec.flags & FLAG_MINUS) && pad > 0)
-		for (i = 0; i < pad; i++)
-			count += write(1, " ", 1);
+		for (i = 0; i < pad; i++) { add_to_buffer(' '); count++; }
 	return (count);
 }
 
 int print_char(va_list args)
 {
 	char c = va_arg(args, int);
-	write(1, &c, 1);
+	add_to_buffer(c);
 	return (1);
 }

@@ -22,7 +22,13 @@ typedef struct format_t
 	int length;
 } format_t;
 
+extern char g_buffer[1024];
+extern int g_buffer_index;
+
 int _printf(const char *format, ...);
+int flush_buffer(void);
+int add_to_buffer(char c);
+int add_str_to_buffer(const char *str, int len);
 int handle_specifier(char format, va_list args, format_t spec);
 format_t parse_flags(const char *format, int *i);
 int print_char(va_list args);

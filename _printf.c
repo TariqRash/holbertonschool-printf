@@ -8,12 +8,15 @@ int _printf(const char *format, ...)
 
 	if (format == NULL)
 		return (-1);
+	
+	g_buffer_index = 0;
 	va_start(args, format);
+	
 	while (format[i])
 	{
 		if (format[i] != '%')
 		{
-			write(1, &format[i], 1);
+			add_to_buffer(format[i]);
 			count++;
 			i++;
 		}
@@ -21,17 +24,15 @@ int _printf(const char *format, ...)
 		{
 			i++;
 			if (format[i] == '\0')
+			{
+				flush_buffer();
+				va_end(args);
 				return (-1);
+			}
 			if (format[i] == '%')
 			{
-				write(1, "%", 1);
+				add_to_buffer('%');
 				count++;
-				i++;
-			}
-			else if (format[i] == ' ' && (format[i + 1] == '\0' || format[i + 1] == ' ' || format[i + 1] == '%'))
-			{
-				write(1, "% ", 2);
-				count += 2;
 				i++;
 			}
 			else
@@ -42,6 +43,8 @@ int _printf(const char *format, ...)
 			}
 		}
 	}
+	
+	flush_buffer();
 	va_end(args);
 	return (count);
 }
