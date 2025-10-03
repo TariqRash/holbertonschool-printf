@@ -1,11 +1,5 @@
 #include "main.h"
 
-/**
- * _printf - Custom printf function
- * @format: Format string containing conversion specifiers
- *
- * Return: Number of characters printed, -1 on error
- */
 int _printf(const char *format, ...)
 {
 	va_list args;
@@ -21,7 +15,11 @@ int _printf(const char *format, ...)
 		{
 			i++;
 			if (format[i] == '\0')
-				return (-1);
+			{
+				write(1, "%", 1);
+				count++;
+				break;
+			}
 			spec = parse_flags(format, &i);
 			count += handle_specifier(format[i], args, spec);
 		}
