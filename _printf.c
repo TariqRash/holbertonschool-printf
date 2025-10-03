@@ -1,9 +1,21 @@
 #include "main.h"
 
+static int is_valid_specifier(char c)
+{
+	return (c == 'c' || c == 's' || c == 'S' || c == '%' || c == 'd' ||
+		c == 'i' || c == 'u' || c == 'o' || c == 'x' || c == 'X' ||
+		c == 'b' || c == 'p' || c == 'r' || c == 'R');
+}
+
+static int is_flag_or_length(char c)
+{
+	return (c == '+' || c == ' ' || c == '#' || c == 'l' || c == 'h');
+}
+
 int _printf(const char *format, ...)
 {
 	va_list args;
-	int i = 0, count = 0, j;
+	int i = 0, count = 0, temp;
 	format_t spec;
 
 	if (format == NULL)
@@ -13,21 +25,19 @@ int _printf(const char *format, ...)
 	{
 		if (format[i] == '%')
 		{
-			j = i;
-			i++;
-			if (format[i] == '\0')
-				return (-1);
-			spec = parse_flags(format, &i);
-			if (format[i] == 'c' || format[i] == 's' || format[i] == 'S' ||
-			    format[i] == '%' || format[i] == 'd' || format[i] == 'i' ||
-			    format[i] == 'u' || format[i] == 'o' || format[i] == 'x' ||
-			    format[i] == 'X' || format[i] == 'b' || format[i] == 'p' ||
-			    format[i] == 'r' || format[i] == 'R')
-				count += handle_specifier(format[i], args, spec);
+			temp = i + 1;
+			while (format[temp] && is_flag_or_length(format[temp]))
+				temp++;
+			if (format[temp] == '\0' || !is_valid_specifier(format[temp]))
+			{
+				write(1, "%", 1);
+				count++;
+			}
 			else
 			{
-				while (j <= i)
-					count += write(1, &format[j++], 1);
+				i++;
+				spec = parse_flags(format, &i);
+				count += handle_specifier(format[i], args, spec);
 			}
 		}
 		else
