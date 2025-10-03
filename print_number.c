@@ -1,5 +1,4 @@
 #include "main.h"
-
 int get_int_length(long n)
 {
 	int len = 0;
@@ -8,37 +7,26 @@ int get_int_length(long n)
 	while (n > 0) { len++; n /= 10; }
 	return (len);
 }
-
 int print_int_rec(unsigned long n)
 {
-	int count = 0;
-	char c;
+	int count = 0; char c;
 	if (n / 10) count += print_int_rec(n / 10);
-	c = (n % 10) + '0';
-	add_to_buffer(c);
-	count++;
+	c = (n % 10) + '0'; add_to_buffer(c); count++;
 	return (count);
 }
-
 int print_int(long n, format_t spec)
 {
-	int count = 0, len, pad, i, prec_pad;
-	unsigned long num;
-	char pad_char = ' ';
-
+	int count = 0, len, pad, i, prec_pad; unsigned long num; char pad_char = ' ';
 	if (spec.precision == 0 && n == 0)
 	{
 		for (i = 0; i < spec.width; i++) { add_to_buffer(' '); count++; }
 		return (count);
 	}
-	len = get_int_length(n);
-	prec_pad = (spec.precision > len) ? spec.precision - len : 0;
+	len = get_int_length(n); prec_pad = (spec.precision > len) ? spec.precision - len : 0;
 	if (n >= 0 && (spec.flags & (FLAG_PLUS | FLAG_SPACE))) len++;
 	if (n < 0) len++;
-	if ((spec.flags & FLAG_ZERO) && !(spec.flags & FLAG_MINUS) && spec.precision < 0)
-		pad_char = '0';
+	if ((spec.flags & FLAG_ZERO) && !(spec.flags & FLAG_MINUS) && spec.precision < 0) pad_char = '0';
 	pad = spec.width - (len + prec_pad);
-	if (pad < 0) pad = 0;
 	if (!(spec.flags & FLAG_MINUS) && pad > 0 && pad_char == ' ')
 		for (i = 0; i < pad; i++) { add_to_buffer(' '); count++; }
 	if (n < 0) { add_to_buffer('-'); count++; num = -n; }
@@ -56,7 +44,6 @@ int print_int(long n, format_t spec)
 		for (i = 0; i < pad; i++) { add_to_buffer(' '); count++; }
 	return (count);
 }
-
 int print_number(va_list args, format_t spec)
 {
 	long n;
