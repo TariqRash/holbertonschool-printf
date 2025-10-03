@@ -25,21 +25,31 @@ typedef struct format_t
 	int length;
 } format_t;
 
+/* Core functions */
 int _printf(const char *format, ...);
 int handle_specifier(char format, va_list args, format_t spec);
+format_t parse_flags(const char *format, int *i);
+
+/* Buffer functions (Task 5) */
+int add_to_buffer(char c);
+int flush_buffer(void);
+void reset_buffer(void);
+
+/* Print functions */
 int print_char(va_list args);
 int print_string(va_list args);
 int print_number(va_list args, format_t spec);
 int print_int(long n, format_t spec);
-int print_unsigned_spec(va_list args, format_t spec);
-int print_octal_spec(va_list args, format_t spec);
-int print_hex_lower_spec(va_list args, format_t spec);
-int print_hex_upper_spec(va_list args, format_t spec);
-format_t parse_flags(const char *format, int *i);
 int print_binary(va_list args);
 int print_pointer(va_list args);
 int print_reverse(va_list args);
 int print_rot13(va_list args);
 int print_custom_string(va_list args);
+
+/* Spec functions with flags/length (Tasks 8-9) */
+int print_unsigned_spec(va_list args, format_t spec);
+int print_octal_spec(va_list args, format_t spec);
+int print_hex_lower_spec(va_list args, format_t spec);
+int print_hex_upper_spec(va_list args, format_t spec);
 
 #endif
