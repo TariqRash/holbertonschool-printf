@@ -1,41 +1,6 @@
 #include "main.h"
 
 /**
- * print_binary - Print an unsigned int in binary
- * @args: Argument list
- *
- * Return: Number of characters printed
- */
-int print_binary(va_list args)
-{
-	unsigned int n = va_arg(args, unsigned int);
-	int count = 0;
-	char buffer[32]; /* 32 bits max for unsigned int */
-	int i = 0;
-
-	if (n == 0)
-	{
-		write(1, "0", 1);
-		return (1);
-	}
-
-	while (n > 0)
-	{
-		buffer[i++] = (n % 2) + '0';
-		n /= 2;
-	}
-
-	/* Print in reverse */
-	while (i > 0)
-	{
-		write(1, &buffer[--i], 1);
-		count++;
-	}
-
-	return (count);
-}
-
-/**
  * handle_specifier - Handle format specifier
  * @format: Format character
  * @args: Arguments list
@@ -57,7 +22,7 @@ int handle_specifier(char format, va_list args)
 	}
 	else if (format == 'd' || format == 'i')
 		count += print_number(args);
-	else if (format == 'b') /* 👈 new binary specifier */
+	else if (format == 'b')
 		count += print_binary(args);
 	else
 	{
@@ -81,9 +46,7 @@ int _printf(const char *format, ...)
 
 	if (format == NULL)
 		return (-1);
-
 	va_start(args, format);
-
 	while (format[i])
 	{
 		if (format[i] == '%')
@@ -100,8 +63,6 @@ int _printf(const char *format, ...)
 		}
 		i++;
 	}
-
 	va_end(args);
 	return (count);
 }
-
