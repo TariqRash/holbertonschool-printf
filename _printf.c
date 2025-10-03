@@ -8,10 +8,8 @@ int _printf(const char *format, ...)
 
 	if (format == NULL)
 		return (-1);
-	
 	g_buffer_index = 0;
 	va_start(args, format);
-	
 	while (format[i])
 	{
 		if (format[i] != '%')
@@ -35,6 +33,13 @@ int _printf(const char *format, ...)
 				count++;
 				i++;
 			}
+			else if (format[i] == ' ' && (format[i + 1] == '\0' || format[i + 1] == ' ' || format[i + 1] == '%'))
+			{
+				add_to_buffer('%');
+				add_to_buffer(' ');
+				count += 2;
+				i++;
+			}
 			else
 			{
 				spec = parse_flags(format, &i);
@@ -43,7 +48,6 @@ int _printf(const char *format, ...)
 			}
 		}
 	}
-	
 	flush_buffer();
 	va_end(args);
 	return (count);
