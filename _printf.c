@@ -23,13 +23,13 @@ int handle_specifier(char format, va_list args)
 	else if (format == 'd' || format == 'i')
 		count += print_number(args);
 	else if (format == 'b')
+		count += print_binary(args);
 	else if (format == 'p')
+		count += print_pointer(args);
 	else if (format == 'r')
+		count += print_reverse(args);
 	else if (format == 'R')
 		count += print_rot13(args);
-		count += print_reverse(args);
-		count += print_pointer(args);
-		count += print_binary(args);
 	else
 	{
 		write(1, "%", 1);
