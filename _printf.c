@@ -25,6 +25,8 @@ int handle_specifier(char format, va_list args)
 	else if (format == 'b')
 	else if (format == 'p')
 	else if (format == 'r')
+	else if (format == 'R')
+		count += print_rot13(args);
 		count += print_reverse(args);
 		count += print_pointer(args);
 		count += print_binary(args);
