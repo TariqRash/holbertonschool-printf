@@ -1,9 +1,9 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <stdarg.h>   // لـ va_list, va_start, va_end
-#include <unistd.h>   // لـ write
-#include <stddef.h>   // لـ NULL
+#include <stdarg.h>   // ~D~@ va_list, va_start, va_end
+#include <unistd.h>   // ~D~@ write
+#include <stddef.h>   // ~D~@ NULL
 
 int _printf(const char *format, ...);
 int print_char(va_list args);
