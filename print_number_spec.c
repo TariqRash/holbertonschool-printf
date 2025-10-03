@@ -9,10 +9,9 @@ int print_int_spec(long n, format_t spec)
 
 	empty_spec.flags = 0;
 	empty_spec.length = 0;
-
 	if (n < 0)
 	{
-		write(1, "-", 1);
+		add_to_buffer('-');
 		count++;
 		num = -n;
 	}
@@ -20,12 +19,12 @@ int print_int_spec(long n, format_t spec)
 	{
 		if (spec.flags & FLAG_PLUS)
 		{
-			write(1, "+", 1);
+			add_to_buffer('+');
 			count++;
 		}
 		else if (spec.flags & FLAG_SPACE)
 		{
-			write(1, " ", 1);
+			add_to_buffer(' ');
 			count++;
 		}
 		num = n;
@@ -33,7 +32,7 @@ int print_int_spec(long n, format_t spec)
 	if (num / 10)
 		count += print_int_spec(num / 10, empty_spec);
 	c = (num % 10) + '0';
-	write(1, &c, 1);
+	add_to_buffer(c);
 	count++;
 	return (count);
 }

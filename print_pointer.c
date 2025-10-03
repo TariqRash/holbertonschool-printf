@@ -1,11 +1,5 @@
 #include "main.h"
 
-/**
- * print_pointer - Prints pointer address
- * @args: Arguments list
- *
- * Return: Number of characters printed
- */
 int print_pointer(va_list args)
 {
 	void *ptr = va_arg(args, void *);
@@ -17,30 +11,30 @@ int print_pointer(va_list args)
 
 	if (ptr == NULL)
 	{
-		write(1, "(nil)", 5);
+		add_to_buffer('(');
+		add_to_buffer('n');
+		add_to_buffer('i');
+		add_to_buffer('l');
+		add_to_buffer(')');
 		return (5);
 	}
-
-	write(1, "0x", 2);
+	add_to_buffer('0');
+	add_to_buffer('x');
 	count += 2;
-
 	if (addr == 0)
 	{
-		write(1, "0", 1);
+		add_to_buffer('0');
 		return (3);
 	}
-
 	while (addr > 0)
 	{
 		buffer[i++] = hex[addr % 16];
 		addr /= 16;
 	}
-
 	while (i > 0)
 	{
-		write(1, &buffer[--i], 1);
+		add_to_buffer(buffer[--i]);
 		count++;
 	}
-
 	return (count);
 }

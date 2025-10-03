@@ -1,11 +1,5 @@
 #include "main.h"
 
-/**
- * print_rot13 - Prints string in ROT13
- * @args: Arguments list
- *
- * Return: Number of characters printed
- */
 int print_rot13(va_list args)
 {
 	char *str = va_arg(args, char *);
@@ -17,7 +11,6 @@ int print_rot13(va_list args)
 
 	if (str == NULL)
 		str = "(null)";
-
 	for (i = 0; str[i]; i++)
 	{
 		int found = 0;
@@ -27,17 +20,14 @@ int print_rot13(va_list args)
 			if (str[i] == input[j])
 			{
 				c = output[j];
-				write(1, &c, 1);
+				add_to_buffer(c);
 				found = 1;
 				break;
 			}
 		}
-
 		if (!found)
-			write(1, &str[i], 1);
-
+			add_to_buffer(str[i]);
 		count++;
 	}
-
 	return (count);
 }

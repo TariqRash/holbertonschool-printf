@@ -1,11 +1,5 @@
 #include "main.h"
 
-/**
- * print_reverse - Prints string in reverse
- * @args: Arguments list
- *
- * Return: Number of characters printed
- */
 int print_reverse(va_list args)
 {
 	char *str = va_arg(args, char *);
@@ -14,15 +8,12 @@ int print_reverse(va_list args)
 
 	if (str == NULL)
 		str = "(null)";
-
 	while (str[len])
 		len++;
-
 	while (len > 0)
 	{
-		write(1, &str[--len], 1);
+		add_to_buffer(str[--len]);
 		count++;
 	}
-
 	return (count);
 }

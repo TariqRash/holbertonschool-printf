@@ -8,7 +8,7 @@ int print_ulong_spec(unsigned long n)
 	if (n / 10)
 		count += print_ulong_spec(n / 10);
 	c = (n % 10) + '0';
-	write(1, &c, 1);
+	add_to_buffer(c);
 	count++;
 	return (count);
 }
@@ -41,12 +41,12 @@ int print_octal_spec(va_list args, format_t spec)
 		n = va_arg(args, unsigned int);
 	if ((spec.flags & FLAG_HASH) && n != 0)
 	{
-		write(1, "0", 1);
+		add_to_buffer('0');
 		count++;
 	}
 	if (n == 0)
 	{
-		write(1, "0", 1);
+		add_to_buffer('0');
 		return (count + 1);
 	}
 	while (n > 0)
@@ -56,7 +56,7 @@ int print_octal_spec(va_list args, format_t spec)
 	}
 	while (i > 0)
 	{
-		write(1, &buffer[--i], 1);
+		add_to_buffer(buffer[--i]);
 		count++;
 	}
 	return (count);
@@ -78,12 +78,13 @@ int print_hex_lower_spec(va_list args, format_t spec)
 		n = va_arg(args, unsigned int);
 	if ((spec.flags & FLAG_HASH) && n != 0)
 	{
-		write(1, "0x", 2);
+		add_to_buffer('0');
+		add_to_buffer('x');
 		count += 2;
 	}
 	if (n == 0)
 	{
-		write(1, "0", 1);
+		add_to_buffer('0');
 		return (count + 1);
 	}
 	while (n > 0)
@@ -93,7 +94,7 @@ int print_hex_lower_spec(va_list args, format_t spec)
 	}
 	while (i > 0)
 	{
-		write(1, &buffer[--i], 1);
+		add_to_buffer(buffer[--i]);
 		count++;
 	}
 	return (count);
@@ -115,12 +116,13 @@ int print_hex_upper_spec(va_list args, format_t spec)
 		n = va_arg(args, unsigned int);
 	if ((spec.flags & FLAG_HASH) && n != 0)
 	{
-		write(1, "0X", 2);
+		add_to_buffer('0');
+		add_to_buffer('X');
 		count += 2;
 	}
 	if (n == 0)
 	{
-		write(1, "0", 1);
+		add_to_buffer('0');
 		return (count + 1);
 	}
 	while (n > 0)
@@ -130,7 +132,7 @@ int print_hex_upper_spec(va_list args, format_t spec)
 	}
 	while (i > 0)
 	{
-		write(1, &buffer[--i], 1);
+		add_to_buffer(buffer[--i]);
 		count++;
 	}
 	return (count);
