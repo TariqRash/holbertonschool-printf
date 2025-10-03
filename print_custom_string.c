@@ -22,14 +22,12 @@ int is_printable(char c)
 int print_hex_char(char c)
 {
 	char *hex = "0123456789ABCDEF";
-	char buffer[4];
 
-	buffer[0] = '\\';
-	buffer[1] = 'x';
-	buffer[2] = hex[(unsigned char)c / 16];
-	buffer[3] = hex[(unsigned char)c % 16];
-
-	write(1, buffer, 4);
+	add_to_buffer('\\');
+	add_to_buffer('x');
+	add_to_buffer(hex[(unsigned char)c / 16]);
+	add_to_buffer(hex[(unsigned char)c % 16]);
+	
 	return (4);
 }
 
@@ -52,7 +50,7 @@ int print_custom_string(va_list args)
 	{
 		if (is_printable(str[i]))
 		{
-			write(1, &str[i], 1);
+			add_to_buffer(str[i]);
 			count++;
 		}
 		else
