@@ -1,63 +1,86 @@
-.TH _PRINTF 3 "October 2025" "Version 1.0" "_printf man page"
+.TH _PRINTF 3 "2024" "1.0" "_printf Manual"
 .SH NAME
-_printf \- formatted output conversion
+_printf \- custom implementation of printf
 .SH SYNOPSIS
 .B #include "main.h"
-.PP
-.B int _printf(const char *format, ...);
+.sp
+.B int _printf(const char *
+.I format
+.B , ...);
 .SH DESCRIPTION
 The
 .B _printf()
-function produces output according to a format as described below.
-The function writes output to
-.B stdout,
-the standard output stream.
-.PP
-This function writes the output under the control of a
+function produces output according to a
 .I format
-string that specifies how subsequent arguments are converted for output.
-.SH RETURN VALUE
-Upon successful return, 
-.B _printf()
-returns the number of characters printed (excluding the null byte used to end output to strings).
-.PP
-If an output error is encountered, a negative value is returned.
-.SH FORMAT STRING
-The format string is a character string composed of zero or more directives.
-.SH CONVERSION SPECIFIERS
-A character that specifies the type of conversion to be applied. The conversion specifiers and their meanings are:
+as described below. This function writes output to
+.B stdout
+, the standard output stream.
+.SS Format String
+The format string is a character string containing conversion specifiers. Each conversion specifier is introduced by the
+.B %
+character and ends with a conversion character.
+.SS Conversion Specifiers
 .TP
 .B c
-The int argument is converted to an unsigned char, and the resulting character is written.
+Character conversion. Prints a single character.
 .TP
 .B s
-The const char * argument is expected to be a pointer to a character array. Characters from the array are written up to (but not including) a terminating null byte.
+String conversion. Prints a null-terminated string.
 .TP
 .B d, i
-The int argument is converted to signed decimal notation.
+Integer conversion. Prints a signed decimal integer.
+.TP
+.B u
+Unsigned integer conversion.
+.TP
+.B o
+Octal conversion.
+.TP
+.B x, X
+Hexadecimal conversion (lowercase/uppercase).
+.TP
+.B b
+Binary conversion (custom).
+.TP
+.B S
+String with non-printable characters shown as \\xHH (custom).
+.TP
+.B p
+Pointer address.
+.TP
+.B r
+Reversed string (custom).
+.TP
+.B R
+ROT13 encoded string (custom).
 .TP
 .B %
-A '%' is written. No argument is converted. The complete conversion specification is '%%'.
+Literal % character.
+.SS Flags
+.TP
+.B +
+Print sign for positive numbers.
+.TP
+.B (space)
+Print space before positive numbers.
+.TP
+.B #
+Alternate form (0 for octal, 0x for hex).
+.TP
+.B 0
+Zero-pad numbers.
+.TP
+.B \-
+Left-justify output.
+.SS Field Width and Precision
+An optional decimal digit string may specify minimum field width. An optional precision may be specified with a period followed by a decimal digit string.
+.SH RETURN VALUE
+Returns the number of characters printed (excluding null byte).
 .SH EXAMPLES
-To print the string "Hello, World!" followed by a new line:
-.PP
-.nf
-.RS
-_printf("Hello, %s!\\n", "World");
-.RE
-.fi
-.PP
-To print an integer:
-.PP
-.nf
-.RS
-_printf("The answer is %d\\n", 42);
-.RE
-.fi
+_printf("Hello %s\\n", "World");
+.br
+_printf("Number: %d\\n", 42);
 .SH SEE ALSO
-.BR printf (3),
-.BR write (2)
+.BR printf (3)
 .SH AUTHORS
-Owen Mousa Algarni, Tariq Almutairi Rasheed Tariq
-.SH BUGS
-No known bugs.
+Written by Tariq Almutairi and Owen Mousa.
