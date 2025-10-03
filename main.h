@@ -37,6 +37,7 @@ int print_octal_spec(va_list args, format_t spec);
 int print_hex_lower_spec(va_list args, format_t spec);
 int print_hex_upper_spec(va_list args, format_t spec);
 int print_pointer(va_list args);
+int print_pointer_spec(va_list args, format_t spec);
 int print_reverse(va_list args);
 int print_rot13(va_list args);
 int print_custom_string(va_list args);

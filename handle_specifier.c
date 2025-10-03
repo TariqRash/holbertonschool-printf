@@ -33,7 +33,7 @@ int handle_specifier(char format, va_list args, format_t spec)
 	else if (format == 'b')
 		count += print_binary(args);
 	else if (format == 'p')
-		count += print_pointer(args);
+		count += print_pointer_spec(args, spec);
 	else if (format == 'r')
 		count += print_reverse(args);
 	else if (format == 'R')
