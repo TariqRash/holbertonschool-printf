@@ -34,6 +34,14 @@ int print_int(long n, format_t spec)
 	int count = 0, len, pad, i, prec_pad;
 	unsigned long num;
 
+	if (spec.precision == 0 && n == 0)
+	{
+		pad = spec.width;
+		for (i = 0; i < pad; i++)
+			count += write(1, " ", 1);
+		return (count);
+	}
+
 	len = get_int_length(n);
 	prec_pad = (spec.precision > len) ? spec.precision - len : 0;
 	

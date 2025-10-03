@@ -17,7 +17,7 @@ int get_hex_length(unsigned long n)
 int print_hex_lower_spec(va_list args, format_t spec)
 {
 	unsigned long n;
-	int count = 0, len, pad, i, idx = 0;
+	int count = 0, len, pad, i, prec_pad, idx = 0;
 	char buffer[32], *hex = "0123456789abcdef";
 
 	if (spec.length == LENGTH_LONG)
@@ -26,18 +26,34 @@ int print_hex_lower_spec(va_list args, format_t spec)
 		n = (unsigned short)va_arg(args, unsigned int);
 	else
 		n = va_arg(args, unsigned int);
+
+	if (spec.precision == 0 && n == 0)
+	{
+		pad = spec.width;
+		for (i = 0; i < pad; i++)
+			count += write(1, " ", 1);
+		return (count);
+	}
+
 	len = get_hex_length(n);
+	prec_pad = (spec.precision > len) ? spec.precision - len : 0;
 	if ((spec.flags & FLAG_HASH) && n != 0)
 		len += 2;
-	pad = spec.width - len;
+	pad = spec.width - (len + prec_pad);
+
 	if (!(spec.flags & FLAG_MINUS) && pad > 0)
 		for (i = 0; i < pad; i++)
 			count += write(1, " ", 1);
+
 	if ((spec.flags & FLAG_HASH) && n != 0)
 	{
 		write(1, "0x", 2);
 		count += 2;
 	}
+
+	for (i = 0; i < prec_pad; i++)
+		count += write(1, "0", 1);
+
 	if (n == 0)
 	{
 		write(1, "0", 1);
@@ -56,16 +72,18 @@ int print_hex_lower_spec(va_list args, format_t spec)
 			count++;
 		}
 	}
+
 	if ((spec.flags & FLAG_MINUS) && pad > 0)
 		for (i = 0; i < pad; i++)
 			count += write(1, " ", 1);
+
 	return (count);
 }
 
 int print_hex_upper_spec(va_list args, format_t spec)
 {
 	unsigned long n;
-	int count = 0, len, pad, i, idx = 0;
+	int count = 0, len, pad, i, prec_pad, idx = 0;
 	char buffer[32], *hex = "0123456789ABCDEF";
 
 	if (spec.length == LENGTH_LONG)
@@ -74,18 +92,34 @@ int print_hex_upper_spec(va_list args, format_t spec)
 		n = (unsigned short)va_arg(args, unsigned int);
 	else
 		n = va_arg(args, unsigned int);
+
+	if (spec.precision == 0 && n == 0)
+	{
+		pad = spec.width;
+		for (i = 0; i < pad; i++)
+			count += write(1, " ", 1);
+		return (count);
+	}
+
 	len = get_hex_length(n);
+	prec_pad = (spec.precision > len) ? spec.precision - len : 0;
 	if ((spec.flags & FLAG_HASH) && n != 0)
 		len += 2;
-	pad = spec.width - len;
+	pad = spec.width - (len + prec_pad);
+
 	if (!(spec.flags & FLAG_MINUS) && pad > 0)
 		for (i = 0; i < pad; i++)
 			count += write(1, " ", 1);
+
 	if ((spec.flags & FLAG_HASH) && n != 0)
 	{
 		write(1, "0X", 2);
 		count += 2;
 	}
+
+	for (i = 0; i < prec_pad; i++)
+		count += write(1, "0", 1);
+
 	if (n == 0)
 	{
 		write(1, "0", 1);
@@ -104,8 +138,10 @@ int print_hex_upper_spec(va_list args, format_t spec)
 			count++;
 		}
 	}
+
 	if ((spec.flags & FLAG_MINUS) && pad > 0)
 		for (i = 0; i < pad; i++)
 			count += write(1, " ", 1);
+
 	return (count);
 }
