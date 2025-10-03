@@ -10,7 +10,7 @@ int print_custom_string(va_list args)
 		str = "(null)";
 	for (i = 0; str[i]; i++)
 	{
-		if (str[i] > 0 && str[i] < 32) || str[i] >= 127)
+		if ((str[i] > 0 && str[i] < 32) || str[i] >= 127)
 		{
 			add_to_buffer('\\'); add_to_buffer('x');
 			hex[0] = "0123456789ABCDEF"[str[i] / 16];
