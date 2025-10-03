@@ -5,6 +5,10 @@ int print_int_spec(long n, format_t spec)
 	int count = 0;
 	unsigned long num;
 	char c;
+	format_t empty_spec;
+
+	empty_spec.flags = 0;
+	empty_spec.length = 0;
 
 	if (n < 0)
 	{
@@ -27,7 +31,7 @@ int print_int_spec(long n, format_t spec)
 		num = n;
 	}
 	if (num / 10)
-		count += print_int_spec(num / 10, (format_t){0, 0});
+		count += print_int_spec(num / 10, empty_spec);
 	c = (num % 10) + '0';
 	write(1, &c, 1);
 	count++;
