@@ -24,6 +24,14 @@ int handle_specifier(char format, va_list args)
 		count += print_number(args);
 	else if (format == 'b')
 		count += print_binary(args);
+	else if (format == 'u')
+		count += print_unsigned(args);
+	else if (format == 'o')
+		count += print_octal(args);
+	else if (format == 'x')
+		count += print_hex_lower(args);
+	else if (format == 'X')
+		count += print_hex_upper(args);
 	else if (format == 'p')
 		count += print_pointer(args);
 	else if (format == 'r')
