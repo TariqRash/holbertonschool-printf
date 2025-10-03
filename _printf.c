@@ -24,6 +24,8 @@ int handle_specifier(char format, va_list args)
 		count += print_number(args);
 	else if (format == 'b')
 	else if (format == 'p')
+	else if (format == 'r')
+		count += print_reverse(args);
 		count += print_pointer(args);
 		count += print_binary(args);
 	else
