@@ -1,9 +1,19 @@
 #include "main.h"
 
+/**
+ * parse_flags - Parse format flags and length
+ * @format: Format string
+ * @i: Current position (will be updated)
+ *
+ * Return: format_t structure with parsed values
+ */
 format_t parse_flags(const char *format, int *i)
 {
-	format_t spec = {0, 0};
+	format_t spec;
 	int pos = *i;
+
+	spec.flags = 0;
+	spec.length = 0;
 
 	while (format[pos] == '+' || format[pos] == ' ' || format[pos] == '#')
 	{
@@ -15,6 +25,7 @@ format_t parse_flags(const char *format, int *i)
 			spec.flags |= FLAG_HASH;
 		pos++;
 	}
+
 	if (format[pos] == 'l')
 	{
 		spec.length = LENGTH_LONG;
@@ -25,6 +36,7 @@ format_t parse_flags(const char *format, int *i)
 		spec.length = LENGTH_SHORT;
 		pos++;
 	}
+
 	*i = pos;
 	return (spec);
 }
