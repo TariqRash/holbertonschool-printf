@@ -17,36 +17,36 @@ int _printf(const char *format, ...)
 			add_to_buffer(format[i]);
 			count++;
 			i++;
+			continue;
 		}
-		else
+		i++;
+		if (format[i] == '\0')
 		{
+			flush_buffer();
+			va_end(args);
+			return (-1);
+		}
+		if (format[i] == '%')
+		{
+			add_to_buffer('%');
+			count++;
 			i++;
-			if (format[i] == '\0')
-			{
-				flush_buffer();
-				va_end(args);
-				return (-1);
-			}
-			if (format[i] == '%')
-			{
-				add_to_buffer('%');
-				count++;
-				i++;
-			}
-			else if (format[i] == ' ' && (format[i + 1] == '\0' || format[i + 1] == ' ' || format[i + 1] == '%'))
+			continue;
+		}
+		if (format[i] == ' ')
+		{
+			if (format[i + 1] == '\0' || format[i + 1] == '%' || format[i + 1] == ' ')
 			{
 				add_to_buffer('%');
 				add_to_buffer(' ');
 				count += 2;
 				i++;
-			}
-			else
-			{
-				spec = parse_flags(format, &i);
-				count += handle_specifier(format[i], args, spec);
-				i++;
+				continue;
 			}
 		}
+		spec = parse_flags(format, &i);
+		count += handle_specifier(format[i], args, spec);
+		i++;
 	}
 	flush_buffer();
 	va_end(args);
