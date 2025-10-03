@@ -104,7 +104,7 @@ int print_number(va_list args, format_t spec)
 	if (spec.length == LENGTH_LONG)
 		n = va_arg(args, long);
 	else if (spec.length == LENGTH_SHORT)
-		n = (short)va_arg(args, int);
+		n = (short int)va_arg(args, int);
 	else
 		n = va_arg(args, int);
 	return (print_int(n, spec));
