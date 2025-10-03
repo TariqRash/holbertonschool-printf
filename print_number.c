@@ -1,22 +1,43 @@
 #include "main.h"
 
-/**
- * print_int - Print integer with flags
- * @n: Number to print
- * @spec: Format specification
- *
- * Return: Number of chars printed
- */
+int get_int_length(long n)
+{
+	int len = 0;
+
+	if (n == 0)
+		return (1);
+	if (n < 0)
+		n = -n;
+	while (n > 0)
+	{
+		len++;
+		n /= 10;
+	}
+	return (len);
+}
+
 int print_int(long n, format_t spec)
 {
-	int count = 0;
+	int count = 0, len, pad, i;
 	unsigned long num;
 	char c;
-	format_t empty_spec;
+	format_t empty;
 
-	empty_spec.flags = 0;
-	empty_spec.length = 0;
+	empty.flags = 0;
+	empty.length = 0;
+	empty.width = 0;
+	empty.precision = -1;
 
+	len = get_int_length(n);
+	if (n >= 0 && (spec.flags & (FLAG_PLUS | FLAG_SPACE)))
+		len++;
+	if (n < 0)
+		len++;
+	pad = spec.width - len;
+
+	if (!(spec.flags & FLAG_MINUS) && pad > 0)
+		for (i = 0; i < pad; i++)
+			count += write(1, " ", 1);
 	if (n < 0)
 	{
 		write(1, "-", 1);
@@ -38,20 +59,16 @@ int print_int(long n, format_t spec)
 		num = n;
 	}
 	if (num / 10)
-		count += print_int(num / 10, empty_spec);
+		count += print_int(num / 10, empty);
 	c = (num % 10) + '0';
 	write(1, &c, 1);
 	count++;
+	if ((spec.flags & FLAG_MINUS) && pad > 0)
+		for (i = 0; i < pad; i++)
+			count += write(1, " ", 1);
 	return (count);
 }
 
-/**
- * print_number - Print number with format spec
- * @args: Arguments list
- * @spec: Format specification
- *
- * Return: Number of chars printed
- */
 int print_number(va_list args, format_t spec)
 {
 	long n;
