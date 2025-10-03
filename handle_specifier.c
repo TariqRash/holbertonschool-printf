@@ -1,21 +1,16 @@
 #include "main.h"
 
-/**
- * handle_specifier - Handle format specifier
- * @format: Format character
- * @args: Arguments list
- * @spec: Format specification
- *
- * Return: Number of characters printed
- */
 int handle_specifier(char format, va_list args, format_t spec)
 {
 	int count = 0;
 
+	if (spec.width == -1)
+		spec.width = va_arg(args, int);
+
 	if (format == 'c')
-		count += print_char(args);
+		count += print_char_width(args, spec);
 	else if (format == 's')
-		count += print_string(args);
+		count += print_string_width(args, spec);
 	else if (format == 'S')
 		count += print_custom_string(args);
 	else if (format == '%')

@@ -26,10 +26,18 @@ format_t parse_flags(const char *format, int *i)
 		pos++;
 	}
 
-	while (format[pos] >= '0' && format[pos] <= '9')
+	if (format[pos] == '*')
 	{
-		spec.width = spec.width * 10 + (format[pos] - '0');
+		spec.width = -1;
 		pos++;
+	}
+	else
+	{
+		while (format[pos] >= '0' && format[pos] <= '9')
+		{
+			spec.width = spec.width * 10 + (format[pos] - '0');
+			pos++;
+		}
 	}
 
 	if (format[pos] == '.')
