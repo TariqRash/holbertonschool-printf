@@ -3,30 +3,24 @@
 int print_binary(va_list args)
 {
 	unsigned int n = va_arg(args, unsigned int);
-	unsigned int mask;
-	int i;
-	int started = 0;
-	int count = 0;
+	int count = 0, i, started = 0;
+	unsigned int mask = 1U << 31;
 
 	if (n == 0)
 	{
-		write(1, "0", 1);
+		add_to_buffer('0');
 		return (1);
 	}
-	for (i = 31; i >= 0; i--)
+	for (i = 0; i < 32; i++)
 	{
-		mask = 1u << i;
 		if (n & mask)
-		{
-			write(1, "1", 1);
-			count++;
 			started = 1;
-		}
-		else if (started)
+		if (started)
 		{
-			write(1, "0", 1);
+			add_to_buffer((n & mask) ? '1' : '0');
 			count++;
 		}
+		mask >>= 1;
 	}
 	return (count);
 }

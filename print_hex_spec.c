@@ -13,19 +13,19 @@ int print_hex_lower_spec(va_list args, format_t spec)
 	if (spec.length == LENGTH_LONG) n = va_arg(args, unsigned long);
 	else if (spec.length == LENGTH_SHORT) n = (unsigned short)va_arg(args, unsigned int);
 	else n = va_arg(args, unsigned int);
-	if (spec.precision == 0 && n == 0) { for (i = 0; i < spec.width; i++) count += write(1, " ", 1); return (count); }
+	if (spec.precision == 0 && n == 0) { for (i = 0; i < spec.width; i++) count += add_to_buffer(' '); return (count); }
 	len = get_hex_length(n); prec_pad = (spec.precision > len) ? spec.precision - len : 0;
 	if ((spec.flags & FLAG_HASH) && n != 0) len += 2;
 	if ((spec.flags & FLAG_ZERO) && !(spec.flags & FLAG_MINUS) && spec.precision < 0) pad_char = '0';
 	pad = spec.width - (len + prec_pad); if (pad < 0) pad = 0;
-	if (!(spec.flags & FLAG_MINUS) && pad > 0 && pad_char == ' ') for (i = 0; i < pad; i++) count += write(1, " ", 1);
-	if ((spec.flags & FLAG_HASH) && n != 0) { write(1, "0x", 2); count += 2; }
-	if (pad_char == '0' && pad > 0) for (i = 0; i < pad; i++) count += write(1, "0", 1);
-	for (i = 0; i < prec_pad; i++) count += write(1, "0", 1);
-	if (n == 0) { write(1, "0", 1); count++; }
+	if (!(spec.flags & FLAG_MINUS) && pad > 0 && pad_char == ' ') for (i = 0; i < pad; i++) count += add_to_buffer(' ');
+	if ((spec.flags & FLAG_HASH) && n != 0) { add_to_buffer('0'); add_to_buffer('x'); count += 2; }
+	if (pad_char == '0' && pad > 0) for (i = 0; i < pad; i++) count += add_to_buffer('0');
+	for (i = 0; i < prec_pad; i++) count += add_to_buffer('0');
+	if (n == 0) { add_to_buffer('0'); count++; }
 	else { while (n > 0) { buffer[idx++] = hex[n % 16]; n /= 16; }
-		while (idx > 0) { write(1, &buffer[--idx], 1); count++; } }
-	if ((spec.flags & FLAG_MINUS) && pad > 0) for (i = 0; i < pad; i++) count += write(1, " ", 1);
+		while (idx > 0) { add_to_buffer(buffer[--idx]); count++; } }
+	if ((spec.flags & FLAG_MINUS) && pad > 0) for (i = 0; i < pad; i++) count += add_to_buffer(' ');
 	return (count);
 }
 int print_hex_upper_spec(va_list args, format_t spec)
@@ -35,18 +35,18 @@ int print_hex_upper_spec(va_list args, format_t spec)
 	if (spec.length == LENGTH_LONG) n = va_arg(args, unsigned long);
 	else if (spec.length == LENGTH_SHORT) n = (unsigned short)va_arg(args, unsigned int);
 	else n = va_arg(args, unsigned int);
-	if (spec.precision == 0 && n == 0) { for (i = 0; i < spec.width; i++) count += write(1, " ", 1); return (count); }
+	if (spec.precision == 0 && n == 0) { for (i = 0; i < spec.width; i++) count += add_to_buffer(' '); return (count); }
 	len = get_hex_length(n); prec_pad = (spec.precision > len) ? spec.precision - len : 0;
 	if ((spec.flags & FLAG_HASH) && n != 0) len += 2;
 	if ((spec.flags & FLAG_ZERO) && !(spec.flags & FLAG_MINUS) && spec.precision < 0) pad_char = '0';
 	pad = spec.width - (len + prec_pad); if (pad < 0) pad = 0;
-	if (!(spec.flags & FLAG_MINUS) && pad > 0 && pad_char == ' ') for (i = 0; i < pad; i++) count += write(1, " ", 1);
-	if ((spec.flags & FLAG_HASH) && n != 0) { write(1, "0X", 2); count += 2; }
-	if (pad_char == '0' && pad > 0) for (i = 0; i < pad; i++) count += write(1, "0", 1);
-	for (i = 0; i < prec_pad; i++) count += write(1, "0", 1);
-	if (n == 0) { write(1, "0", 1); count++; }
+	if (!(spec.flags & FLAG_MINUS) && pad > 0 && pad_char == ' ') for (i = 0; i < pad; i++) count += add_to_buffer(' ');
+	if ((spec.flags & FLAG_HASH) && n != 0) { add_to_buffer('0'); add_to_buffer('X'); count += 2; }
+	if (pad_char == '0' && pad > 0) for (i = 0; i < pad; i++) count += add_to_buffer('0');
+	for (i = 0; i < prec_pad; i++) count += add_to_buffer('0');
+	if (n == 0) { add_to_buffer('0'); count++; }
 	else { while (n > 0) { buffer[idx++] = hex[n % 16]; n /= 16; }
-		while (idx > 0) { write(1, &buffer[--idx], 1); count++; } }
-	if ((spec.flags & FLAG_MINUS) && pad > 0) for (i = 0; i < pad; i++) count += write(1, " ", 1);
+		while (idx > 0) { add_to_buffer(buffer[--idx]); count++; } }
+	if ((spec.flags & FLAG_MINUS) && pad > 0) for (i = 0; i < pad; i++) count += add_to_buffer(' ');
 	return (count);
 }

@@ -10,7 +10,7 @@ int print_ulong(unsigned long n)
 {
 	int count = 0; char c;
 	if (n / 10) count += print_ulong(n / 10);
-	c = (n % 10) + '0'; write(1, &c, 1); count++;
+	c = (n % 10) + '0'; add_to_buffer(c); count++;
 	return (count);
 }
 int print_unsigned_spec(va_list args, format_t spec)
@@ -19,14 +19,14 @@ int print_unsigned_spec(va_list args, format_t spec)
 	if (spec.length == LENGTH_LONG) n = va_arg(args, unsigned long);
 	else if (spec.length == LENGTH_SHORT) n = (unsigned short)va_arg(args, unsigned int);
 	else n = va_arg(args, unsigned int);
-	if (spec.precision == 0 && n == 0) { for (i = 0; i < spec.width; i++) count += write(1, " ", 1); return (count); }
+	if (spec.precision == 0 && n == 0) { for (i = 0; i < spec.width; i++) count += add_to_buffer(' '); return (count); }
 	len = get_ulong_length(n); prec_pad = (spec.precision > len) ? spec.precision - len : 0;
 	if ((spec.flags & FLAG_ZERO) && !(spec.flags & FLAG_MINUS) && spec.precision < 0) pad_char = '0';
 	pad = spec.width - (len + prec_pad); if (pad < 0) pad = 0;
-	if (!(spec.flags & FLAG_MINUS) && pad > 0 && pad_char == ' ') for (i = 0; i < pad; i++) count += write(1, " ", 1);
-	if (pad_char == '0' && pad > 0) for (i = 0; i < pad; i++) count += write(1, "0", 1);
-	for (i = 0; i < prec_pad; i++) count += write(1, "0", 1);
+	if (!(spec.flags & FLAG_MINUS) && pad > 0 && pad_char == ' ') for (i = 0; i < pad; i++) count += add_to_buffer(' ');
+	if (pad_char == '0' && pad > 0) for (i = 0; i < pad; i++) count += add_to_buffer('0');
+	for (i = 0; i < prec_pad; i++) count += add_to_buffer('0');
 	count += print_ulong(n);
-	if ((spec.flags & FLAG_MINUS) && pad > 0) for (i = 0; i < pad; i++) count += write(1, " ", 1);
+	if ((spec.flags & FLAG_MINUS) && pad > 0) for (i = 0; i < pad; i++) count += add_to_buffer(' ');
 	return (count);
 }
