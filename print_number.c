@@ -55,6 +55,9 @@ int print_int(long n, format_t spec)
 		pad_char = '0';
 	
 	pad = spec.width - (len + prec_pad);
+	
+	if (pad < 0)
+		pad = 0;
 
 	if (!(spec.flags & FLAG_MINUS) && pad > 0 && pad_char == ' ')
 		for (i = 0; i < pad; i++)
