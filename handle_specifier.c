@@ -6,6 +6,8 @@ int handle_specifier(char format, va_list args, format_t spec)
 
 	if (spec.width == -1)
 		spec.width = va_arg(args, int);
+	if (spec.precision == -2)
+		spec.precision = va_arg(args, int);
 
 	if (format == 'c')
 		count += print_char_width(args, spec);

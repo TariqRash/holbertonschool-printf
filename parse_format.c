@@ -43,11 +43,19 @@ format_t parse_flags(const char *format, int *i)
 	if (format[pos] == '.')
 	{
 		pos++;
-		spec.precision = 0;
-		while (format[pos] >= '0' && format[pos] <= '9')
+		if (format[pos] == '*')
 		{
-			spec.precision = spec.precision * 10 + (format[pos] - '0');
+			spec.precision = -2;
 			pos++;
+		}
+		else
+		{
+			spec.precision = 0;
+			while (format[pos] >= '0' && format[pos] <= '9')
+			{
+				spec.precision = spec.precision * 10 + (format[pos] - '0');
+				pos++;
+			}
 		}
 	}
 

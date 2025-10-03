@@ -16,28 +16,38 @@ int get_int_length(long n)
 	return (len);
 }
 
+int print_int_rec(unsigned long n)
+{
+	int count = 0;
+	char c;
+
+	if (n / 10)
+		count += print_int_rec(n / 10);
+	c = (n % 10) + '0';
+	write(1, &c, 1);
+	count++;
+	return (count);
+}
+
 int print_int(long n, format_t spec)
 {
-	int count = 0, len, pad, i;
+	int count = 0, len, pad, i, prec_pad;
 	unsigned long num;
-	char c;
-	format_t empty;
-
-	empty.flags = 0;
-	empty.length = 0;
-	empty.width = 0;
-	empty.precision = -1;
 
 	len = get_int_length(n);
+	prec_pad = (spec.precision > len) ? spec.precision - len : 0;
+	
 	if (n >= 0 && (spec.flags & (FLAG_PLUS | FLAG_SPACE)))
 		len++;
 	if (n < 0)
 		len++;
-	pad = spec.width - len;
+	
+	pad = spec.width - (len + prec_pad);
 
 	if (!(spec.flags & FLAG_MINUS) && pad > 0)
 		for (i = 0; i < pad; i++)
 			count += write(1, " ", 1);
+
 	if (n < 0)
 	{
 		write(1, "-", 1);
@@ -58,14 +68,16 @@ int print_int(long n, format_t spec)
 		}
 		num = n;
 	}
-	if (num / 10)
-		count += print_int(num / 10, empty);
-	c = (num % 10) + '0';
-	write(1, &c, 1);
-	count++;
+
+	for (i = 0; i < prec_pad; i++)
+		count += write(1, "0", 1);
+
+	count += print_int_rec(num);
+
 	if ((spec.flags & FLAG_MINUS) && pad > 0)
 		for (i = 0; i < pad; i++)
 			count += write(1, " ", 1);
+
 	return (count);
 }
 
