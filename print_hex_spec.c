@@ -1,19 +1,24 @@
 #include "main.h"
 
-/**
- * print_hex_lower_spec - Print hex lower with spec
- * @args: Arguments
- * @spec: Format spec
- *
- * Return: Count
- */
+int get_hex_length(unsigned long n)
+{
+	int len = 0;
+
+	if (n == 0)
+		return (1);
+	while (n > 0)
+	{
+		len++;
+		n /= 16;
+	}
+	return (len);
+}
+
 int print_hex_lower_spec(va_list args, format_t spec)
 {
 	unsigned long n;
-	int count = 0;
-	char buffer[32];
-	int i = 0;
-	char *hex = "0123456789abcdef";
+	int count = 0, len, pad, i, idx = 0;
+	char buffer[32], *hex = "0123456789abcdef";
 
 	if (spec.length == LENGTH_LONG)
 		n = va_arg(args, unsigned long);
@@ -21,6 +26,13 @@ int print_hex_lower_spec(va_list args, format_t spec)
 		n = (unsigned short)va_arg(args, unsigned int);
 	else
 		n = va_arg(args, unsigned int);
+	len = get_hex_length(n);
+	if ((spec.flags & FLAG_HASH) && n != 0)
+		len += 2;
+	pad = spec.width - len;
+	if (!(spec.flags & FLAG_MINUS) && pad > 0)
+		for (i = 0; i < pad; i++)
+			count += write(1, " ", 1);
 	if ((spec.flags & FLAG_HASH) && n != 0)
 	{
 		write(1, "0x", 2);
@@ -29,35 +41,32 @@ int print_hex_lower_spec(va_list args, format_t spec)
 	if (n == 0)
 	{
 		write(1, "0", 1);
-		return (count + 1);
-	}
-	while (n > 0)
-	{
-		buffer[i++] = hex[n % 16];
-		n /= 16;
-	}
-	while (i > 0)
-	{
-		write(1, &buffer[--i], 1);
 		count++;
 	}
+	else
+	{
+		while (n > 0)
+		{
+			buffer[idx++] = hex[n % 16];
+			n /= 16;
+		}
+		while (idx > 0)
+		{
+			write(1, &buffer[--idx], 1);
+			count++;
+		}
+	}
+	if ((spec.flags & FLAG_MINUS) && pad > 0)
+		for (i = 0; i < pad; i++)
+			count += write(1, " ", 1);
 	return (count);
 }
 
-/**
- * print_hex_upper_spec - Print hex upper with spec
- * @args: Arguments
- * @spec: Format spec
- *
- * Return: Count
- */
 int print_hex_upper_spec(va_list args, format_t spec)
 {
 	unsigned long n;
-	int count = 0;
-	char buffer[32];
-	int i = 0;
-	char *hex = "0123456789ABCDEF";
+	int count = 0, len, pad, i, idx = 0;
+	char buffer[32], *hex = "0123456789ABCDEF";
 
 	if (spec.length == LENGTH_LONG)
 		n = va_arg(args, unsigned long);
@@ -65,6 +74,13 @@ int print_hex_upper_spec(va_list args, format_t spec)
 		n = (unsigned short)va_arg(args, unsigned int);
 	else
 		n = va_arg(args, unsigned int);
+	len = get_hex_length(n);
+	if ((spec.flags & FLAG_HASH) && n != 0)
+		len += 2;
+	pad = spec.width - len;
+	if (!(spec.flags & FLAG_MINUS) && pad > 0)
+		for (i = 0; i < pad; i++)
+			count += write(1, " ", 1);
 	if ((spec.flags & FLAG_HASH) && n != 0)
 	{
 		write(1, "0X", 2);
@@ -73,17 +89,23 @@ int print_hex_upper_spec(va_list args, format_t spec)
 	if (n == 0)
 	{
 		write(1, "0", 1);
-		return (count + 1);
-	}
-	while (n > 0)
-	{
-		buffer[i++] = hex[n % 16];
-		n /= 16;
-	}
-	while (i > 0)
-	{
-		write(1, &buffer[--i], 1);
 		count++;
 	}
+	else
+	{
+		while (n > 0)
+		{
+			buffer[idx++] = hex[n % 16];
+			n /= 16;
+		}
+		while (idx > 0)
+		{
+			write(1, &buffer[--idx], 1);
+			count++;
+		}
+	}
+	if ((spec.flags & FLAG_MINUS) && pad > 0)
+		for (i = 0; i < pad; i++)
+			count += write(1, " ", 1);
 	return (count);
 }
