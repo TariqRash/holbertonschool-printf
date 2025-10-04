@@ -1,5 +1,11 @@
 #include "main.h"
 
+/**
+ * parse_flags - Parses format flags, width, precision, length
+ * @format: Format string
+ * @i: Current position pointer
+ * Return: Populated format_t struct
+ */
 format_t parse_flags(const char *format, int *i)
 {
 	format_t spec;
@@ -9,7 +15,6 @@ format_t parse_flags(const char *format, int *i)
 	spec.width = 0;
 	spec.precision = -1;
 	spec.length = 0;
-
 	while (format[pos] == '+' || format[pos] == ' ' || format[pos] == '#' ||
 	       format[pos] == '0' || format[pos] == '-')
 	{
@@ -25,7 +30,6 @@ format_t parse_flags(const char *format, int *i)
 			spec.flags |= FLAG_MINUS;
 		pos++;
 	}
-
 	if (format[pos] == '*')
 	{
 		spec.width = -1;
@@ -39,7 +43,6 @@ format_t parse_flags(const char *format, int *i)
 			pos++;
 		}
 	}
-
 	if (format[pos] == '.')
 	{
 		pos++;
@@ -58,7 +61,6 @@ format_t parse_flags(const char *format, int *i)
 			}
 		}
 	}
-
 	if (format[pos] == 'l')
 	{
 		spec.length = LENGTH_LONG;
@@ -69,7 +71,6 @@ format_t parse_flags(const char *format, int *i)
 		spec.length = LENGTH_SHORT;
 		pos++;
 	}
-
 	*i = pos;
 	return (spec);
 }

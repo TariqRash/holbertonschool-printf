@@ -1,5 +1,12 @@
 #include "main.h"
 
+/**
+ * handle_specifier - Routes to appropriate print function
+ * @format: Format specifier character
+ * @args: Variable arguments list
+ * @spec: Format specification struct
+ * Return: Number of characters printed
+ */
 int handle_specifier(char format, va_list args, format_t spec)
 {
 	int count = 0;
@@ -8,7 +15,6 @@ int handle_specifier(char format, va_list args, format_t spec)
 		spec.width = va_arg(args, int);
 	if (spec.precision == -2)
 		spec.precision = va_arg(args, int);
-
 	if (format == 'c')
 		count += print_char_width(args, spec);
 	else if (format == 's')

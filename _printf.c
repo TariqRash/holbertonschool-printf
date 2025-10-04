@@ -1,5 +1,10 @@
 #include "main.h"
 
+/**
+ * _printf - Custom printf implementation
+ * @format: Format string
+ * Return: Number of characters printed
+ */
 int _printf(const char *format, ...)
 {
 	va_list args;
